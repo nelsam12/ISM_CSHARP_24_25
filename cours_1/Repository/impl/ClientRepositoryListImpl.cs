@@ -4,8 +4,9 @@ using Cours.Models;
 namespace Cours.Repository.Impl
 {
 
-    public class ClientRepositoryImpl : IClientRepository
+    public class ClientRepositoryListImpl : IClientRepository
     {
+        
         private readonly List<Client> clients = new List<Client>();
 
         public List<Client> SelectAll()

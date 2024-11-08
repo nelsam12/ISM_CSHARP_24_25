@@ -1,17 +1,21 @@
-﻿using Cours.Models;
+﻿using Cours.Core;
+using Cours.Core.Factory;
+using Cours.Models;
 using Cours.Repository;
 using Cours.Repository.Impl;
 using Cours.Service;
 using Cours.Service.Impl;
 using Cours.View;
+using Cours.Enum;
 
 namespace Cours
 {
     internal class Program
     {
+
         public static void Main(string[] args)
         {
-            IClientRepository clientRepository = new ClientRepositoryImpl();
+            IClientRepository clientRepository = ClientFactory.createClientRepository(Persistence.LIST)!;
             IClientService clientService = new ClientServiceImpl(clientRepository);
 
             int choice;
@@ -46,7 +50,8 @@ namespace Cours
                     case 5:
                         Console.WriteLine("Surnom du client : ");
                         Client? client3 = clientService.FindBySurname(Console.ReadLine()!);
-                        if (client3 != null){
+                        if (client3 != null)
+                        {
                             ClientView.ListDetteClient(client3);
                         }
                         break;
@@ -86,6 +91,9 @@ namespace Cours
         3. Creation d'un projet web ASP MVC
             a.Fonctionnalites 
                 1.CRUD CLIENT
+        4. Creer un Repository qui aura toutes les methodes du CRUD (Simplification)
+        5. Abstract Pattern Factory
+        6. Documentation Design Pattern Facade
      */
 
 }

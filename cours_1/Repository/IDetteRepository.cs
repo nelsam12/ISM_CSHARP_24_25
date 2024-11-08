@@ -3,7 +3,7 @@ using Cours.Models;
 
 namespace Cours.Repository
 {
-    public interface IClientRepository : IRepository<Client>
+    public interface IDetteRepository : IRepository<Dette>
     {
       
     }

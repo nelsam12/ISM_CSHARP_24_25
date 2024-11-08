@@ -10,7 +10,8 @@ namespace Cours.Service
         void Delete(int id);
         void Update(Client client);
 
-        //
+        Client? FindBySurname(string surnom);
+       
 
     }
 }

@@ -14,7 +14,6 @@ namespace Cours
             IClientRepository clientRepository = new ClientRepositoryImpl();
             IClientService clientService = new ClientServiceImpl(clientRepository);
 
-
             int choice;
             do
             {
@@ -44,6 +43,13 @@ namespace Cours
                             clientService.Delete(client2.Id);
 
                         break;
+                    case 5:
+                        Console.WriteLine("Surnom du client : ");
+                        Client? client3 = clientService.FindBySurname(Console.ReadLine()!);
+                        if (client3 != null){
+                            ClientView.ListDetteClient(client3);
+                        }
+                        break;
                     case 0:
                         Console.WriteLine("Au revoir!");
                         break;
@@ -62,12 +68,24 @@ namespace Cours
             Console.WriteLine("2. Afficher tous les clients");
             Console.WriteLine("3. Modifier un client");
             Console.WriteLine("4. Supprimer un client");
+            Console.WriteLine("5. Afficher les dettes d'un client");
             Console.WriteLine("0. Quitter");
             Console.Write("Votre choix : ");
-            // return int.Parse(Console.ReadLine());
-            // double.Parse(Console.ReadLine());
             return Convert.ToInt32(Console.ReadLine());
         }
     }
+
+    /* 
+        1. Correction Projet Dette avec les Listes
+        2. Utilisation Base de Donnne .Net
+        ____________________________________
+        TAF pour le Prochain Cours
+
+        1. Base Donne avec ORM Drapper
+        2. Base Donne avec Entity Framework
+        3. Creation d'un projet web ASP MVC
+            a.Fonctionnalites 
+                1.CRUD CLIENT
+     */
 
 }

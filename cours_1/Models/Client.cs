@@ -9,7 +9,8 @@ namespace Cours.Models
 
         private static int count;
 
-        public Client(){
+        public Client()
+        {
             count++;
             id = count;
         }
@@ -19,6 +20,18 @@ namespace Cours.Models
         public string Surnom { get => surnom; set => surnom = value; }
         public string Telephone { get => telephone; set => telephone = value; }
         public string Adresse { get => adresse; set => adresse = value; }
+        public List<Dette> Dettes { get; } = new List<Dette>();
+       
+
+        public void AddDette(Dette dette)
+        {
+            // Relation C => D
+            Dettes.Add(dette);
+            dette.Id = Dettes.Count;
+            // Relation de D => C
+            dette.Client = this;
+        }
+        
 
 
 

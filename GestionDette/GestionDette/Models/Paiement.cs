@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cours.Models;
 
-public class Dette
+public class Paiement
 {
 
 
@@ -11,13 +11,10 @@ public class Dette
   [Range(1, float.MaxValue, ErrorMessage = "Seul un montant positif est autorisé")]
   public float Montant { get; set; }
 
-  [Range(1, float.MaxValue, ErrorMessage = "Seul un montant positif est autorisé")]
-  public float MontantVerser { get; set; }
 
   // Relation
-  public Client Client { get; set; }
-  public int ClientId { get; set; }
-   public virtual ICollection<Paiement>? Paiements { get; set; }
+  public Dette Dette { get; set; }
+  public int DetteId { get; set; }
 
 
 

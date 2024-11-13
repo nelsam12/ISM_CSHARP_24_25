@@ -4,6 +4,7 @@ using Cours.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestionDette.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113173614_TableV1")]
+    partial class TableV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +34,7 @@ namespace GestionDette.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Adresse")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Surnom")
@@ -78,30 +82,6 @@ namespace GestionDette.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("Dettes");
-                });
-
-            modelBuilder.Entity("Cours.Models.Paiement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<int>("DetteId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Montant")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DetteId");
-
-                    b.ToTable("Paiements");
                 });
 
             modelBuilder.Entity("Cours.Models.User", b =>
@@ -158,25 +138,9 @@ namespace GestionDette.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("Cours.Models.Paiement", b =>
-                {
-                    b.HasOne("Cours.Models.Dette", "Dette")
-                        .WithMany("Paiements")
-                        .HasForeignKey("DetteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dette");
-                });
-
             modelBuilder.Entity("Cours.Models.Client", b =>
                 {
                     b.Navigation("Dettes");
-                });
-
-            modelBuilder.Entity("Cours.Models.Dette", b =>
-                {
-                    b.Navigation("Paiements");
                 });
 
             modelBuilder.Entity("Cours.Models.User", b =>

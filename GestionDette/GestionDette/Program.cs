@@ -1,4 +1,5 @@
 using Cours.Data;
+using Cours.Fixtures;
 using Cours.Services;
 using Cours.Services.Impl;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     AddSingleton => Créer une instance unique pour toute la durée de l'application
  */
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IDetteService, DetteService>();
+builder.Services.AddScoped<IPaiementService, PaiementService>();
+builder.Services.AddScoped<ClientFixtures>();
 
 
 
@@ -53,7 +57,16 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"
+    pattern: "{controller=Client}/{action=Index}"
 );
 
+// Load Fixtures
+using (var scope = app.Services.CreateScope())
+
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var seeder = scope.ServiceProvider.GetRequiredService<ClientFixtures>();
+    seeder.Load();
+}
+// Un Provider est quelqu'un ou quelque chose qui fournit quelque chose
 app.Run();

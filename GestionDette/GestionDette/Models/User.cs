@@ -21,9 +21,10 @@ public class User
     public string Password { get; set; }
 
     // Relationships
-
-      public Client Client { get; set; }
+    public Client? Client { get; set; }
 
     
+
+
 
 }

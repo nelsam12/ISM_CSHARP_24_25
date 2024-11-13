@@ -12,6 +12,17 @@ public class ClientService : IClientService
     {
         this._context = context;
     }
+
+    public async Task<Client> Create(Client client)
+    {
+        
+        _context.Clients.Add(client);
+        
+        await _context.SaveChangesAsync();
+
+        return client;
+    }
+
     public async Task<IEnumerable<Client>> GetClientsAsync()
     {
         // Your implementation to fetch clients from your data source

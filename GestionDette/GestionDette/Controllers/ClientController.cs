@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using GestionDette.Models;
 using Cours.Services;
+using Cours.Models;
 
 namespace GestionDette.Controllers;
 
@@ -9,6 +10,7 @@ public class ClientController : Controller
 {
     private readonly ILogger<ClientController> _logger;
     private readonly IClientService _clientService;
+
 
     /* 
         ViewBag => Recupérer le même type
@@ -30,10 +32,31 @@ public class ClientController : Controller
         return View(clients);
     }
 
-    public IActionResult Privacy()
+    public  IActionResult Create()
     {
         return View();
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public  async Task<IActionResult> Create([Bind("Surnom,Telephone,Adresse")] Client client)
+    {
+        if (ModelState.IsValid)
+        {
+            Console.WriteLine($"***********************************************{client.Adresse}***********************************************");
+            var clientAdded = await _clientService.Create(client);
+            // if (clientAdded != null)
+            // {
+                TempData["Message"] = "Client créé avec succès!";
+                return RedirectToAction(nameof(Index));
+            // }
+        }
+        return View(client);
+    }
+
+   
+
+   
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

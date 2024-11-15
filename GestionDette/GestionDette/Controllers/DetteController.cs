@@ -28,9 +28,9 @@ public class DetteController : Controller
         return View();
     }
 
-    public async Task<IActionResult> DetteClient(int clientId)
+    public async Task<IActionResult> DetteClient(int clientId, int page = 1, int pageSize = 3)
     {
-        var dettes = await _detteService.GetDettesClientAsync(clientId);
+        var dettes = await _detteService.GetDettesClientByPaginate(clientId, page, pageSize);
         return View(dettes);
     }
 

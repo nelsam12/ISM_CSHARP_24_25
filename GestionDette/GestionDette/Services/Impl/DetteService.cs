@@ -1,3 +1,4 @@
+using Cours.Core;
 using Cours.Data;
 using Cours.Models;
 using Microsoft.EntityFrameworkCore;
@@ -18,5 +19,12 @@ public class DetteService : IDetteService
         return await _context.Dettes
         .Where(dette => dette.ClientId == clientId)
         .ToListAsync();
+    }
+
+    public async Task<PaginationDetteModel> GetDettesClientByPaginate(int clientId, int page, int pageSize)
+    {
+        var dettes = _context.Dettes.Where(dette => dette.ClientId == clientId).AsQueryable<Dette>();
+        var client = await _context.Clients.SingleAsync<Client>(client => client.Id == clientId)!;
+        return await PaginationDetteModel.PaginateDette(dettes, pageSize, page, client);
     }
 }

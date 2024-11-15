@@ -31,6 +31,7 @@ public class ClientController : Controller
     //     // Pass the clients to the view
     //     return View(clients);
     // }
+    // DTO
 
      public async Task<IActionResult> Index(int page = 1, int pageSize = 4)
     {

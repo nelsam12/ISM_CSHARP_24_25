@@ -1,8 +1,12 @@
 ﻿@using Cours.Core
 @using Cours.Models
-@* @model type_de_la_donne *@
 @model PaginationModel<Client>
 
+@* 
+    DTO model 
+    car ce n'est pas ce qui est
+    stocké en DB
+*@
 
 @{
     ViewData["Title"] = "Client Page";
@@ -55,6 +59,7 @@
                     }
                 </tbody>
             </table>
+            @* Partie Dynamique partial *@
             <nav aria-label="Page navigation" class="float-end">
                 <ul class="pagination    ">
                     @if (Model.HasPreviousPage)
@@ -83,6 +88,7 @@
                     }
                 </ul>
             </nav>
+            @* Partie Dynamique partial *@
 
         </div>
 

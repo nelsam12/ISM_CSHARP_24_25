@@ -11,7 +11,7 @@ public class ClientService : IClientService
 
     public ClientService(ApplicationDbContext context)
     {
-        this._context = context;
+        _context = context;
     }
 
     public async Task<Client> Create(Client client)
@@ -34,5 +34,6 @@ public class ClientService : IClientService
     {
         var clients = _context.Clients.AsQueryable<Client>();
         return await PaginationModel<Client>.Paginate(clients, pageSize, page);
+
     }
 }

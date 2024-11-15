@@ -4,3 +4,4 @@
 3. Faire un Payement
 4. Mettre le Statut dans Liste des Dettes
     - Filtrer Dettes par client,par statut et  client
+5. Partial view (Pagination dynamic)

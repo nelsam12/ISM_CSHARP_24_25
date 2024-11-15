@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Cours.Enum;
 
 namespace Cours.Models;
 
@@ -14,10 +15,21 @@ public class Dette
   [Range(1, float.MaxValue, ErrorMessage = "Seul un montant positif est autorisé")]
   public float MontantVerser { get; set; }
 
+  public StatusDette Status
+  {
+    get
+    {
+      return MontantVerser >= Montant ? StatusDette.Payee : StatusDette.Impayee;
+    }
+  }
+
+
   // Relation
   public Client Client { get; set; }
   public int ClientId { get; set; }
-   public virtual ICollection<Paiement>? Paiements { get; set; }
+  public virtual ICollection<Paiement>? Paiements { get; set; }
+  public virtual ICollection<ArticleDette>? ArticleDettes { get; set; }
+
 
 
 

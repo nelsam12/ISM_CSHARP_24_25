@@ -21,17 +21,43 @@ public class ApplicationDbContext : DbContext
          .OnDelete(DeleteBehavior.Cascade) // Supprimer une entité Client implique la suppression de toutes les entités associées User
          .IsRequired(false);  // La colonne UserId dans la table Clients est obligatoire
 
-         modelBuilder.Entity<Paiement>()
-         .HasOne(p => p.Dette)
-         .WithMany(d => d.Paiements)
-         .HasForeignKey(p => p.DetteId);  // Associer la clé étrangère à la colonne DetteId dans la table Paiements
-         
+        modelBuilder.Entity<Paiement>()
+        .HasOne(p => p.Dette)
+        .WithMany(d => d.Paiements)
+        .HasForeignKey(p => p.DetteId);  // Associer la clé étrangère à la colonne DetteId dans la table Paiements
+
+        modelBuilder.Entity<ArticleDette>()
+        .HasKey(e => new {
+            e.ArticleId,
+            e.DetteId
+        });
+
+        modelBuilder.Entity<ArticleDette>()
+        .HasOne(ad => ad.Article)
+        .WithMany(a => a.ArticleDettes)
+        // Associer la clé étrangère à la colonne DetteId dans la table ArticleDettes
+        .HasForeignKey(ad => ad.ArticleId);  // Associer la clé étrangère à la colonne ArticleId dans la table ArticleDettes
+
+        modelBuilder.Entity<ArticleDette>()
+       .HasOne(ad => ad.Dette)
+        .WithMany(a => a.ArticleDettes)
+        .HasForeignKey(ad => ad.DetteId);
+
+        modelBuilder.Entity<Dette>()
+        .HasOne(d => d.Client)
+       .WithMany(c => c.Dettes);
+
+
+
+
     }
     // Define your DbSet properties here.
     public DbSet<Client> Clients { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Dette> Dettes { get; set; }
     public DbSet<Paiement> Paiements { get; set; }
+    public DbSet<Article> Articles { get; set; }
+    public DbSet<ArticleDette> ArticleDettes { get; set; }
 
     /* 
         On ne peut pas augmenter la visibilité d'un attribut ou d'une méthode héritée

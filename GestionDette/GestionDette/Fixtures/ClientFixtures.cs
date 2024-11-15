@@ -14,6 +14,45 @@ public class ClientFixtures
 
     public void Load()
     {
+        if (!_context.Articles.Any())
+        {
+            _context.Articles.AddRange(
+                new Article
+                {
+                    Libelle = "Article 1",
+                    Prix = 1000,
+                    Stock = 500
+                },
+                  new Article
+                  {
+                      Libelle = "Lait",
+                      Prix = 600,
+                      Stock = 40
+                  },
+                  new Article
+                  {
+                      Libelle = "Sucre",
+                      Prix = 650,
+                      Stock = 100
+                  },
+                  new Article
+                  {
+                      Libelle = "Riz",
+                      Prix = 400,
+                      Stock = 150
+                  }
+
+            );
+
+            _context.SaveChanges();
+        }
+
+        /* 
+
+
+         */
+
+
         if (!_context.Clients.Any())
         {
             _context.Clients.AddRange(
@@ -23,11 +62,14 @@ public class ClientFixtures
                     Telephone = "771234567",
                     Adresse = "123 Rue des Bleus",
                     Dettes = [
-                    new Dette { Montant = 1000, Date = DateOnly.FromDateTime(DateTime.Now.AddDays(-3))},
+                    new Dette { Montant = 1000, Date = DateOnly.FromDateTime(DateTime.Now.AddDays(-3)), ArticleDettes = [
+
+                    ]},
                     new Dette { Montant = 2000, Date =  DateOnly.FromDateTime(DateTime.Now.AddDays(-8)), MontantVerser = 1500 , Paiements = [
                         new Paiement { Date = DateOnly.FromDateTime(DateTime.Now.AddDays(-2)), Montant = 500 },
                         new Paiement { Date = DateOnly.FromDateTime(DateTime.Now.AddDays(-5)), Montant = 1000 }
                     ]},
+                    //  Des ArticleDette
                     new Dette { Montant = 3000, Date =  DateOnly.FromDateTime(DateTime.Now.AddDays(-1)) ,  Paiements = [
                         new Paiement { Date = DateOnly.FromDateTime(DateTime.Now.AddDays(-2)), Montant = 500 },
                         new Paiement { Date = DateOnly.FromDateTime(DateTime.Now.AddDays(-5)), Montant = 1000 },
@@ -68,8 +110,20 @@ public class ClientFixtures
                 ]
                 }
             );
-            _context.SaveChanges();
+
+            // _context.SaveChanges();
         }
+
+        if (!_context.ArticleDettes.Any())
+        {
+            _context.ArticleDettes.AddRange(
+                new ArticleDette { Article = _context.Articles.Find(1)!, Dette = _context.Dettes.Find(1)!, Quantite = 15, PrixUnitaire = 680 },
+                new ArticleDette { Article = _context.Articles.Find(2)!, Dette = _context.Dettes.Find(1)!, Quantite = 20, PrixUnitaire = 700 },
+                new ArticleDette { Article = _context.Articles.Find(3)!, Dette = _context.Dettes.Find(1)!, Quantite = 45, PrixUnitaire = 500 },
+                new ArticleDette { Article = _context.Articles.Find(4)!, Dette = _context.Dettes.Find(2)!, Quantite = 15, PrixUnitaire = 876 }
+            );
+        }
+        _context.SaveChanges();
 
     }
 }

@@ -1,6 +1,6 @@
-﻿@using Cours.Models
-@* @model type_de_la_donne *@
-@model IEnumerable<Dette>
+﻿@using Cours.Core
+@using Cours.Models
+@model PaginationDetteModel
 
 
 @{
@@ -22,19 +22,22 @@
                         <th scope="col">Date</th>
                         <th scope="col">Montant</th>
                         <th scope="col">Montant Versé</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var dette in Model)
+                    @foreach (var dette in Model.Items)
                     {
                         <tr class="">
                             <td>@Html.DisplayFor(modelItem => dette.Id)</td>
                             <td>@Html.DisplayFor(modelItem => dette.Date)</td>
                             <td>@Html.DisplayFor(modelItem => dette.Montant)</td>
                             <td>@Html.DisplayFor(modelItem => dette.MontantVerser)</td>
+                            <td>@Html.DisplayFor(modelItem => dette.Status)</td>
                             <td>
-                                <a class="btn btn-outline-primary" asp-controller="Paiement" asp-action="PaiementsDette" asp-route-id="@dette.Id">Paiements</a>
+                                <a class="btn btn-outline-primary" asp-controller="Paiement" asp-action="PaiementsDette"
+                                    asp-route-id="@dette.Id">Paiements</a>
                             </td>
 
 
@@ -42,27 +45,38 @@
                     }
                 </tbody>
             </table>
+            @* Partie Dynamique partial *@
             <nav aria-label="Page navigation" class="float-end">
                 <ul class="pagination    ">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item active" aria-current="page">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="@Url.Action("DetteClient", new {clientId = Model.Client.Id,page = Model.CurrentPage - 1})"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item  @(i==Model.CurrentPage ? "active" : "")" aria-current="page">
+                            <a class="page-link"
+                                href="@Url.Action("DetteClient", new {clientId = Model.Client.Id,page = i})">@i</a>
+                        </li>
+                    }
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="DetteClient" asp-route-page="@(Model.CurrentPage + 1)" asp-route-clientId="@Model.Client.Id"
+                                aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
                 </ul>
             </nav>
+            @* Partie Dynamique partial *@
 
         </div>
 

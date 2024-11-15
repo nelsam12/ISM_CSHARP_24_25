@@ -1,3 +1,4 @@
+using Cours.Core;
 using Cours.Data;
 using Cours.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,9 @@ public class ClientService : IClientService
 
     public async Task<Client> Create(Client client)
     {
-        
+
         _context.Clients.Add(client);
-        
+
         await _context.SaveChangesAsync();
 
         return client;
@@ -27,5 +28,11 @@ public class ClientService : IClientService
     {
         // Your implementation to fetch clients from your data source
         return await _context.Clients.ToListAsync();
+    }
+
+    public async Task<PaginationModel<Client>> GetClientsByPaginate(int page, int pageSize)
+    {
+        var clients = _context.Clients.AsQueryable<Client>();
+        return await PaginationModel<Client>.Paginate(clients, pageSize, page);
     }
 }

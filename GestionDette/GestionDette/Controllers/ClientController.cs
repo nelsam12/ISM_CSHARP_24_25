@@ -24,39 +24,45 @@ public class ClientController : Controller
         _clientService = clientService;
     }
     // Home/Index | Routes
-    public async Task<IActionResult> Index()
+    // public async Task<IActionResult> Index()
+    // {
+    //     // Fetch clients from the service
+    //     var clients = await _clientService.GetClientsAsync();
+    //     // Pass the clients to the view
+    //     return View(clients);
+    // }
+
+     public async Task<IActionResult> Index(int page = 1, int pageSize = 4)
     {
         // Fetch clients from the service
-        var clients = await _clientService.GetClientsAsync();
+        var clients = await _clientService.GetClientsByPaginate(page, pageSize);
         // Pass the clients to the view
         return View(clients);
     }
 
-    public  IActionResult Create()
+    public IActionResult Create()
     {
         return View();
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public  async Task<IActionResult> Create([Bind("Surnom,Telephone,Adresse")] Client client)
+    public async Task<IActionResult> Create([Bind("Surnom,Telephone,Adresse")] Client client)
     {
         if (ModelState.IsValid)
         {
-            Console.WriteLine($"***********************************************{client.Adresse}***********************************************");
+
             var clientAdded = await _clientService.Create(client);
-            // if (clientAdded != null)
-            // {
-                TempData["Message"] = "Client créé avec succès!";
-                return RedirectToAction(nameof(Index));
-            // }
+            TempData["Message"] = "Client créé avec succès!";
+            return RedirectToAction(nameof(Index));
+
         }
         return View(client);
     }
 
-   
 
-   
+
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
